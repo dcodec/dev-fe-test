@@ -18,7 +18,7 @@ const Routes = () => {
         <BrowserRouter>
             <Header />
 
-            <main>
+            <main className="flex-grow-1">
                 <Switch>
                     <Route path="/">
                         <Home />
