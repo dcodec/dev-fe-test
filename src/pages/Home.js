@@ -1,6 +1,10 @@
+import { TopStories } from "../components";
+
 const Home = () => {
     return (
-        <h1>Home page</h1>
+        <>
+            <TopStories />
+        </>
     );
 }
 

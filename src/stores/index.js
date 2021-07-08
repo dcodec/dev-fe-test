@@ -1,7 +1,7 @@
-import Bookmark from './Bookmark';
+import Stories from './Stories';
 
 const stores = {
-    bookmark: new Bookmark()
+    stories: new Stories()
 }
 
 export default stores;

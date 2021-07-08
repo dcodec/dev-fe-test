@@ -16,3 +16,57 @@ footer {
   height: 243px;
   background-color: $bg-color;
 }
+
+.search {
+  position: absolute;
+  right: 0;
+  bottom: -34px;
+
+  .form-control {
+    outline: none;
+    box-shadow: none;
+    background: $bg-color url(../img/search-icon@2x.svg) no-repeat right 12px
+      center;
+    padding: 9px 36px 9px 9px;
+    width: 15px;
+    color: whitesmoke;
+    border: 2px solid transparent;
+    border-bottom: 2px solid white;
+    cursor: pointer;
+    transition: all 0.5s;
+    border-radius: 0;
+
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+
+    &:hover {
+      border-bottom: 2px solid white;
+    }
+
+    &:focus {
+      width: 200px;
+      border-bottom: 2px solid white;
+    }
+  }
+}
+
+.btn-bookmark {
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .icon {
+    display: inline-block;
+    background: url(../img/bookmarkon-icon@2x.svg) no-repeat;
+    width: 16px;
+    height: 16px;
+    margin-right: 0.25rem;
+  }
+}
+
+.form-select {
+  cursor: pointer;
+}

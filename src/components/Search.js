@@ -1,6 +1,8 @@
 const Search = () => {
     return (
-        <h1>Search</h1>
+        <div className="search">
+            <input type="text" className="form-control" placeholder="Search" />
+        </div>
     );
 }
 
