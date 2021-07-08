@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { observer } from 'mobx-react';
 
-import { getOptions } from '../helper';
+import { getOptions, getQueryString } from '../helper';
 import stores from "../stores";
 
 const TopStories = withRouter(observer(({ history, match }) => {
@@ -10,9 +10,11 @@ const TopStories = withRouter(observer(({ history, match }) => {
     const options = getOptions(match.params.q);
     const orderBy = (e) => {
         let el = e.target;
+        let opt = options;
 
-        history.push('/q=&orderBy=' + el.value);
-    }
+        opt.orderBy = el.value;
+        history.push('/' + getQueryString(opt));
+    };
 
     useEffect(() => {
         setLoading(false);
@@ -33,6 +35,14 @@ const TopStories = withRouter(observer(({ history, match }) => {
             return (
                 <div className="spinner-border text-primary" role="status">
                     <span className="visually-hidden">Loading...</span>
+                </div>
+            );
+        }
+
+        if (!stories.length) {
+            return (
+                <div className="col text-muted text-center">
+                    Not found..
                 </div>
             );
         }
