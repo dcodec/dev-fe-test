@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { observer } from 'mobx-react';
 
+import { getOptions } from '../helper';
 import stores from "../stores";
 
 const renderTopStories = () => {
@@ -20,7 +21,7 @@ const renderTopStories = () => {
         return lists.push(
             <div key={index} className="col">
                 <div className="card">
-                    <img src={item.fields.thumbnail} className="card-img-top" alt={item.webTitle} />
+                    {item.fields?.thumbnail ? <img src={item.fields.thumbnail} className="card-img-top" alt={item.webTitle} /> : null}
                     <div className="card-body">{item.webTitle}</div>
                 </div>
             </div>
@@ -30,14 +31,21 @@ const renderTopStories = () => {
     return lists;
 }
 
-const TopStories = withRouter(observer(({ match }) => {
-    console.log(match);
+const TopStories = withRouter(observer(({ history, match }) => {
+    const options = getOptions(match.params.q);
+    const orderBy = (e) => {
+        let el = e.target;
+
+        history.push('/q=&orderBy=' + el.value);
+    }
+
     useEffect(() => {
         stores.stories.getTopStoriesAsync({
-            'order-by': 'newest',
+            'q': options.q || '',
+            'order-by': options.orderBy || 'newest',
             'show-fields': 'thumbnail'
         });
-    }, []);
+    }, [options]);
 
     return (
         <div className="container">
@@ -51,7 +59,7 @@ const TopStories = withRouter(observer(({ match }) => {
                                 View Bookmark
                             </button>
 
-                            <select className="form-select">
+                            <select className="form-select" value={options.orderBy} onChange={orderBy}>
                                 <option value="newest">Newest first</option>
                                 <option value="oldest">Oldest firt</option>
                                 <option value="relevance">Most popular</option>

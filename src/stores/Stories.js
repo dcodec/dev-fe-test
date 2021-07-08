@@ -12,11 +12,7 @@ class Stories {
         makeAutoObservable(this);
     }
 
-    async getTopStoriesAsync(options, refresh = false) {
-        if (this.stories.length && !refresh) {
-            return true;
-        }
-
+    async getTopStoriesAsync(options) {
         let query = getQueryString(options, '&');
 
         try {
