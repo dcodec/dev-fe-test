@@ -1,37 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { observer } from 'mobx-react';
 
 import { getOptions } from '../helper';
 import stores from "../stores";
 
-const renderTopStories = () => {
-    const stories = stores.stories.stories;
-    let lists = [];
-
-    if (!stories.length) {
-        return (
-            <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </div>
-        );
-    }
-
-    stories.map((item, index) => {
-        return lists.push(
-            <div key={index} className="col">
-                <div className="card">
-                    {item.fields?.thumbnail ? <img src={item.fields.thumbnail} className="card-img-top" alt={item.webTitle} /> : null}
-                    <div className="card-body">{item.webTitle}</div>
-                </div>
-            </div>
-        );
-    });
-
-    return lists;
-}
-
 const TopStories = withRouter(observer(({ history, match }) => {
+    const [loading, setLoading] = useState(false);
     const options = getOptions(match.params.q);
     const orderBy = (e) => {
         let el = e.target;
@@ -40,12 +15,41 @@ const TopStories = withRouter(observer(({ history, match }) => {
     }
 
     useEffect(() => {
+        setLoading(false);
         stores.stories.getTopStoriesAsync({
             'q': options.q || '',
             'order-by': options.orderBy || 'newest',
             'show-fields': 'thumbnail'
+        }).then(() => {
+            setLoading(true);
         });
-    }, [options]);
+    }, [options.q, options.orderBy]);
+
+    const renderTopStories = () => {
+        const stories = stores.stories.stories;
+        let lists = [];
+
+        if (!loading) {
+            return (
+                <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            );
+        }
+
+        stories.map((item, index) => {
+            return lists.push(
+                <div key={index} className="col">
+                    <div className="card">
+                        {item.fields?.thumbnail ? <img src={item.fields.thumbnail} className="card-img-top" alt={item.webTitle} /> : null}
+                        <div className="card-body">{item.webTitle}</div>
+                    </div>
+                </div>
+            );
+        });
+
+        return lists;
+    }
 
     return (
         <div className="container">
