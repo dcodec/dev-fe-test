@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { withRouter } from "react-router-dom";
 import { observer } from 'mobx-react';
 
 import stores from "../stores";
@@ -29,9 +30,13 @@ const renderTopStories = () => {
     return lists;
 }
 
-const TopStories = observer(() => {
+const TopStories = withRouter(observer(({ match }) => {
+    console.log(match);
     useEffect(() => {
-        stores.stories.getTopStoriesAsync();
+        stores.stories.getTopStoriesAsync({
+            'order-by': 'newest',
+            'show-fields': 'thumbnail'
+        });
     }, []);
 
     return (
@@ -61,6 +66,6 @@ const TopStories = observer(() => {
             </div>
         </div>
     );
-});
+}));
 
 export default TopStories;

@@ -20,7 +20,7 @@ const Routes = () => {
 
             <main className="flex-grow-1">
                 <Switch>
-                    <Route path="/">
+                    <Route path="/:q?/:order?">
                         <Home />
                     </Route>
 
